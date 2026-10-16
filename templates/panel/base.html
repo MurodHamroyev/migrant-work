@@ -1,0 +1,23 @@
+{% load static ui %}<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Панель — MigrantWork</title><link rel="stylesheet" href="{% static 'css/style.css' %}"></head>
+<body class="panel">{% include '_icons.html' %}{% with n=request.resolver_match.url_name role=user.role %}
+<aside class="side"><div class="logo light"><i>M</i><span>MigrantWork<small>{% if role == 'admin' %}Администратор{% elif role == 'manager' %}Менеджер{% else %}Оператор{% endif %}</small></span></div>
+<nav>
+{% if role == 'admin' %}
+ <a href="{% url 'panel_dashboard' %}" class="{% if n == 'panel_dashboard' %}on{% endif %}">{% icon 'grid' %}<span>Дашборд</span></a>
+ <a href="{% url 'panel_applications' %}" class="{% if 'application' in n %}on{% endif %}">{% icon 'briefcase' %}<span>Заявки</span></a>
+ <a href="{% url 'panel_shifts' %}" class="{% if n == 'panel_shifts' %}on{% endif %}">{% icon 'check' %}<span>Смены</span></a>
+ <a href="{% url 'panel_vacancies' %}" class="{% if 'vacanc' in n %}on{% endif %}">{% icon 'file' %}<span>Вакансии</span></a>
+ <a href="{% url 'panel_warehouses' %}" class="{% if 'warehouse' in n %}on{% endif %}">{% icon 'box' %}<span>Склады</span></a>
+ <a href="{% url 'panel_employees' %}" class="{% if n == 'panel_employees' or n == 'panel_person' %}on{% endif %}">{% icon 'users' %}<span>Сотрудники</span></a>
+ <a href="{% url 'panel_team' 'manager' %}" class="{% if n == 'panel_team' or n == 'panel_team_edit' %}on{% endif %}">{% icon 'shield' %}<span>Менеджеры и операторы</span></a>
+ <a href="{% url 'panel_company' %}" class="{% if n == 'panel_company' %}on{% endif %}">{% icon 'building' %}<span>О компании</span></a>
+ <a href="{% url 'panel_problems' %}" class="{% if 'problem' in n %}on{% endif %}">{% icon 'alert' %}<span>Проблемы</span></a>
+{% else %}
+ <a href="{% url 'panel_employees' %}" class="on">{% icon 'users' %}<span>{% if role == 'manager' %}Сотрудники склада{% else %}Поиск сотрудников{% endif %}</span></a>
+{% endif %}</nav>
+<div class="me"><b>{{ user.display_name }}</b><small>{{ user.username }}</small>
+<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="ghost light">{% icon 'logout' %} Выйти</button></form></div></aside>
+<section class="pmain">{% include '_messages.html' %}{% block content %}{% endblock %}</section>{% endwith %}
+<script src="{% static 'js/app.js' %}"></script></body></html>

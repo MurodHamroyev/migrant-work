@@ -1,0 +1,5 @@
+{% extends 'panel/base.html' %}{% block content %}
+<h1>Склады</h1><p class="muted">Склад привязывается к вакансиям и к менеджеру</p>
+<div class="grid2"><div>{% for w in items %}<div class="card item"><div><b>{{ w.name }}</b><br><span class="muted">{{ w.city }}, {{ w.address }} · вакансий: {{ w.n }} · менеджеров: {{ w.m }}</span></div>
+<div class="acts"><a href="{% url 'panel_warehouse_edit' w.id %}">Изменить</a><form method="post" action="{% url 'panel_warehouse_delete' w.id %}" onsubmit="return confirm('Удалить склад?')">{% csrf_token %}<button class="ghost red">Удалить</button></form></div></div>{% empty %}<p class="muted">Складов пока нет</p>{% endfor %}</div>
+<div class="card"><h3>Новый склад</h3><form method="post">{% csrf_token %}{% include '_form.html' %}<button class="btn full">Добавить</button></form></div></div>{% endblock %}

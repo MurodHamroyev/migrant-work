@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<section class="hero"><h1>{% t 'problems_title' %}</h1><p>{% t 'problems_sub' %}</p></section>
+<form class="card" method="post">{% csrf_token %}<div class="field"><label>{% t 'describe_problem' %}</label>{{ form.text }}</div><button class="btn full">{% t 'btn_send' %}</button></form>
+<h2>{% t 'your_reports' %}</h2>
+{% for p in items %}<div class="card"><div class="row"><small class="muted">{{ p.created_at|date:"d.m.Y H:i" }}</small><span class="badge {{ p.status }}">{% if p.status == 'open' %}{% t 'problem_open' %}{% else %}{% t 'problem_resolved' %}{% endif %}</span></div><p>{{ p.text|linebreaksbr }}</p></div>
+{% empty %}<p class="muted">{% t 'none_yet' %}</p>{% endfor %}{% endblock %}

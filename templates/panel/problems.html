@@ -1,0 +1,5 @@
+{% extends 'panel/base.html' %}{% block content %}
+<h1>Проблемы</h1><p class="muted">Обращения работников</p>
+{% for p in items %}<div class="card"><div class="row"><div><b>{{ p.user.display_name }}</b> <small class="muted">{{ p.created_at|date:"d.m.Y H:i" }} · {{ p.user.phone }}</small></div><span class="badge {{ p.status }}">{{ p.get_status_display }}</span></div><p>{{ p.text|linebreaksbr }}</p>
+{% if p.status == 'open' %}<form method="post" action="{% url 'panel_problem_resolve' p.id %}">{% csrf_token %}<button class="btn light sm">Отметить решённой</button></form>{% endif %}</div>
+{% empty %}<p class="muted">Обращений нет</p>{% endfor %}{% endblock %}

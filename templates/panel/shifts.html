@@ -1,0 +1,7 @@
+{% extends 'panel/base.html' %}{% block content %}
+<h1>Смены на проверке</h1><p class="muted">Работники, которые забыли отметить смену. Примите или отклоните: работник получит уведомление.</p>
+{% for s in items %}<div class="card"><div class="row"><div><b>{{ s.application.user.display_name }}</b><br><span class="muted">{{ s.application.vacancy.title }} · за {{ s.work_date|date:"d.m.Y" }}</span></div></div>
+<a href="{% url 'private_file' 'shift' s.id %}" target="_blank"><img class="proof" src="{% url 'private_file' 'shift' s.id %}" alt=""></a>
+<div class="two"><form method="post" action="{% url 'panel_shift_decide' s.id 'accept' %}">{% csrf_token %}<button class="btn green full">Принять</button></form>
+<form method="post" action="{% url 'panel_shift_decide' s.id 'reject' %}">{% csrf_token %}<button class="btn danger full">Отклонить</button></form></div></div>
+{% empty %}<p class="muted">Нет смен на проверке</p>{% endfor %}{% endblock %}

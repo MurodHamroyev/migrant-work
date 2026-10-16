@@ -1,0 +1,6 @@
+{% extends 'panel/base.html' %}{% load ui %}{% block content %}
+<a class="back" href="{% url 'panel_vacancies' %}">← Вакансии</a><h1>{% if obj %}Изменить вакансию{% else %}Новая вакансия{% endif %}</h1>
+<div class="card narrow2"><form method="post" enctype="multipart/form-data">{% csrf_token %}{% include '_form.html' %}
+<div class="field"><label>Фото склада (можно несколько)</label><label class="drop">{% icon 'camera' %}<span class="fname">Выберите фото</span><input type="file" name="photos" accept="image/*" multiple data-fname></label></div>
+<button class="btn">Сохранить</button></form>
+{% if obj and obj.photos.all %}<h3>Загруженные фото</h3><div class="thumbs">{% for p in obj.photos.all %}<form method="post" action="{% url 'panel_vacancy_photo_delete' p.id %}">{% csrf_token %}<img src="{{ p.image.url }}" alt=""><button class="ghost red">Удалить</button></form>{% endfor %}</div>{% endif %}</div>{% endblock %}

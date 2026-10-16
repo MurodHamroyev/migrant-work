@@ -1,0 +1,6 @@
+{% extends 'panel/base.html' %}{% load ui %}{% block content %}
+<h1>О компании</h1><p class="muted">Эта страница видна работникам в их кабинете</p>
+<form class="card narrow2" method="post" enctype="multipart/form-data">{% csrf_token %}{% include '_form.html' %}
+<div class="field"><label>Сертификаты и контракты (фото, можно несколько)</label><label class="drop">{% icon 'camera' %}<span class="fname">Выберите файлы</span><input type="file" name="certs" accept="image/*" multiple data-fname></label></div>
+<div class="field"><label>Подпись к загружаемым</label><input name="cert_title"></div><button class="btn">Сохранить</button></form>
+{% if certs %}<h2>Загруженные</h2><div class="thumbs">{% for c in certs %}<form method="post" action="{% url 'panel_cert_delete' c.id %}">{% csrf_token %}<img src="{{ c.image.url }}" alt="">{{ c.title }}<button class="ghost red">Удалить</button></form>{% endfor %}</div>{% endif %}{% endblock %}

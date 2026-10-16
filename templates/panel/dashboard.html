@@ -1,0 +1,6 @@
+{% extends 'panel/base.html' %}{% load ui %}{% block content %}
+<h1>Дашборд</h1><p class="muted">Что требует вашего внимания</p>
+<div class="stats four">{% for l, n, q in stats %}{% if q %}<a class="card stat" href="{% url 'panel_applications' %}{{ q }}">{% else %}<div class="card stat">{% endif %}<b>{{ n }}</b><span>{{ l }}</span>{% if q %}</a>{% else %}</div>{% endif %}{% endfor %}</div>
+<div class="row"><h2>Уведомления</h2><form method="post" action="{% url 'panel_read_all' %}">{% csrf_token %}<button class="btn light sm">Всё прочитано</button></form></div>
+{% for n in feed %}<a class="card slim feed {% if not n.is_read %}new{% endif %}" href="{{ n.url|default:'#' }}"><span>{{ n.text }}</span><small class="muted">{{ n.created_at|date:"d.m H:i" }}</small></a>
+{% empty %}<p class="muted">Пока тихо</p>{% endfor %}{% endblock %}

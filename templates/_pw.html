@@ -1,0 +1,3 @@
+{% load ui %}<div class="field"><label for="{{ f.id_for_label }}">{{ label }}</label>
+<div class="pw">{{ f }}<button type="button" class="eye" data-eye aria-label="show">{% icon 'eye' 'e1' %}{% icon 'eyeoff' 'e2' %}</button></div>
+{% for e in f.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>

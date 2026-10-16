@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<a class="back" href="{% if lt %}{% url 'final_docs' a.id %}{% else %}{% url 'dashboard' %}{% endif %}">← {% t 'back' %}</a>
+<section class="hero"><h1>{% t 'final_title' %}</h1>{% if not lt %}<p>{% t 'final_hint' %}</p>{% endif %}</section>
+{% if not lt %}<div class="options">{% for k in types %}<a class="card option" href="?type={{ k }}"><b>{% t 'legal_'|add:k %}</b>{% icon 'chev' 'rot' %}</a>{% endfor %}</div>
+{% else %}<form class="card" method="post" enctype="multipart/form-data">{% csrf_token %}<input type="hidden" name="legal_type" value="{{ lt }}">
+<p><span class="badge approved">{% t 'legal_'|add:lt %}</span></p>
+{% for e in errors %}<p class="err">{{ e }}</p>{% endfor %}
+<div class="two"><div class="field"><label>{% t 'first_name' %}</label><input name="first_name" value="{{ post.first_name|default:user.first_name }}"></div>
+<div class="field"><label>{% t 'last_name' %}</label><input name="last_name" value="{{ post.last_name|default:user.last_name }}"></div></div>
+{% for f in fields %}<div class="field"><label>{{ f.label }}{% if f.optional %} <small>({% t 'optional' %})</small>{% endif %}</label>
+<label class="drop">{% icon 'camera' %}<span class="fname">{% t 'choose_files' %}</span><input type="file" name="{{ f.kind }}" accept="image/*,application/pdf" data-fname {% if f.multi %}multiple{% endif %}></label></div>{% endfor %}
+<div class="field"><label>{% t 'bank_details' %}</label><textarea name="bank_details" rows="3">{{ post.bank_details }}</textarea></div>
+<button class="btn full">{% t 'btn_send_docs' %}</button></form>{% endif %}{% endblock %}

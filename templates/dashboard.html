@@ -1,0 +1,15 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<section class="hero"><h1>{% t 'hello' %}, {{ user.first_name|default:user.username }}!</h1><p>{% t 'track' %}</p></section>
+<div class="stats">
+  <div class="card stat"><span>{% t 'total_apps' %}</span><b>{{ apps|length }}</b></div>
+  <div class="card stat"><span>{% t 'shifts_done' %}</span><b>{{ shifts }}</b></div>
+  <div class="card stat wide"><span>{% t 'cur_status' %}</span><b class="sm">{% if current %}{% t 'status_'|add:current.status %}{% else %}{% t 'no_active' %}{% endif %}</b></div>
+</div>
+<h2>{% t 'your_apps' %}</h2>
+{% for a in apps %}<article class="card app">
+  <div class="row"><b>{{ a.vacancy.title }}</b><span class="badge {{ a.status }}">{% t 'status_'|add:a.status %}</span></div>
+  <p class="muted">{% icon 'pin' %} {{ a.vacancy.location }} · {{ a.created_at|date:"d.m.Y" }}</p>
+  {% if a.steps %}<ol class="steps">{% for s in a.steps %}<li class="{{ s.state }}"><i>{% if s.state %}✓{% endif %}</i><small>{% t 'status_'|add:s.key %}</small></li>{% endfor %}</ol>{% endif %}
+  {% include '_stage.html' %}
+</article>{% empty %}<div class="card empty">{% icon 'briefcase' 'big' %}<p class="muted">{% t 'no_apps' %}</p><a class="btn" href="{% url 'vacancies' %}">{% t 'view_jobs' %}</a></div>{% endfor %}
+{% endblock %}

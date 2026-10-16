@@ -1,0 +1,5 @@
+Django>=5.0,<6.0
+Pillow>=10.0
+gunicorn>=22.0
+# для PostgreSQL раскомментируйте:
+# psycopg[binary]>=3.1

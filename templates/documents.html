@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<a class="back" href="{% url 'dashboard' %}">← {% t 'back' %}</a>
+<section class="hero"><h1>{% t 'docs_title' %}</h1><p>{% t 'docs_hint' %}</p></section>
+<form class="card" method="post" enctype="multipart/form-data">{% csrf_token %}
+{% for e in errors %}<p class="err">{{ e }}</p>{% endfor %}
+<div class="field"><label>{% t 'doc_passport_front' %}</label><label class="drop">{% icon 'camera' %}<span class="fname">{% t 'choose_files' %}</span><input type="file" name="passport_front" accept="image/*,application/pdf" data-fname></label></div>
+<div class="field"><label>{% t 'doc_passport_inner' %}</label><label class="drop">{% icon 'camera' %}<span class="fname">{% t 'choose_files' %}</span><input type="file" name="passport_inner" accept="image/*,application/pdf" data-fname></label></div>
+<div class="field"><label>{% t 'contact1' %}</label><input name="contact1" type="tel" inputmode="tel" value="{{ post.contact1 }}" placeholder="+"></div>
+<div class="field"><label>{% t 'contact2' %}</label><input name="contact2" type="tel" inputmode="tel" value="{{ post.contact2 }}" placeholder="+"></div>
+<button class="btn full">{% t 'btn_send_docs' %}</button></form>{% endblock %}

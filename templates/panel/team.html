@@ -1,0 +1,7 @@
+{% extends 'panel/base.html' %}{% block content %}
+<h1>Менеджеры и операторы</h1>
+<div class="chips"><a class="chip {% if role == 'manager' %}on{% endif %}" href="{% url 'panel_team' 'manager' %}">Менеджеры</a><a class="chip {% if role == 'operator' %}on{% endif %}" href="{% url 'panel_team' 'operator' %}">Операторы</a></div>
+<p class="muted">{% if role == 'manager' %}Менеджер видит только сотрудников своего склада.{% else %}Оператор ищет сотрудников по имени и фамилии и открывает пакет документов.{% endif %} Логин и пароль придумываете вы.</p>
+<div class="grid2"><div>{% for u in items %}<div class="card item"><div><b>{{ u.display_name }}</b><br><span class="muted">логин: {{ u.username }}{% if u.warehouse %} · {{ u.warehouse }}{% endif %}</span></div>
+<div class="acts"><a href="{% url 'panel_team_edit' u.id %}">Изменить</a><form method="post" action="{% url 'panel_team_delete' u.id %}" onsubmit="return confirm('Удалить кабинет?')">{% csrf_token %}<button class="ghost red">Удалить</button></form></div></div>{% empty %}<p class="muted">Пока никого нет</p>{% endfor %}</div>
+<div class="card"><h3>Создать кабинет</h3><form method="post">{% csrf_token %}{% include '_form.html' %}<button class="btn full">Создать</button></form></div></div>{% endblock %}

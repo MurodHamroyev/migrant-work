@@ -1,0 +1,17 @@
+{% load ui %}{% if a.status == 'interview' %}
+<div class="stage blue"><b>{% icon 'calendar' %} {% t 'interview_title' %}</b>
+{% if a.interview_link %}<a class="btn full" href="{{ a.interview_link }}" target="_blank" rel="noopener">{% icon 'link' %} {% t 'join_interview' %}</a>{% else %}<p class="muted">{% t 'interview_wait' %}</p>{% endif %}</div>
+{% elif a.status == 'approved' %}
+<div class="stage green"><b>{% icon 'check' %} {% t 'approved_title' %}</b><p>{% t 'approved_q' %}</p>
+{% if a.ready_to_go %}<p class="ok">{% t 'ready_sent' %}</p>{% else %}<div class="two">
+<form method="post" action="{% url 'app_ready' a.id %}">{% csrf_token %}<input type="hidden" name="choice" value="ready"><button class="btn green full">{% t 'btn_ready' %}</button></form>
+<form method="post" action="{% url 'app_ready' a.id %}" onsubmit="return confirm('{% t 'confirm_decline' %}')">{% csrf_token %}<input type="hidden" name="choice" value="decline"><button class="btn danger full">{% t 'btn_decline' %}</button></form></div>{% endif %}</div>
+{% elif a.status == 'documents' %}
+{% if a.docs_submitted_at %}<p class="ok">{% icon 'check' %} {% t 'docs_sent' %}</p>{% else %}
+<div class="stage amber"><b>{% icon 'file' %} {% t 'docs_title' %}</b><p>{% t 'docs_hint' %}</p><a class="btn full" href="{% url 'documents' a.id %}">{% t 'btn_send_docs' %}</a></div>{% endif %}
+{% elif a.status == 'working' %}
+<div class="stage green"><b>{% icon 'check' %} {% t 'working_title' %}</b><a class="btn green full" href="{% url 'shift' %}">{% t 'shift_title' %}</a></div>
+{% elif a.status == 'completed' %}
+{% if a.final_submitted_at %}<p class="ok">{% icon 'check' %} {% t 'docs_sent' %}</p>{% else %}
+<div class="stage amber"><b>{% icon 'file' %} {% t 'final_title' %}</b><p>{% t 'final_hint' %}</p><a class="btn full" href="{% url 'final_docs' a.id %}">{% t 'final_title' %}</a></div>{% endif %}
+{% endif %}

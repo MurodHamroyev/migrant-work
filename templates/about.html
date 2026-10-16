@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<section class="hero"><h1>{% t 'about_title' %}</h1></section>
+<div class="card"><div class="logo big"><i>M</i><span>MigrantWork</span></div><p class="lead">{{ info.about_text|linebreaksbr }}</p></div>
+<div class="stats">{% for v, l in info.stat_list %}<div class="card stat"><b>{{ v }}</b><span>{{ l }}</span></div>{% endfor %}</div>
+<div class="card"><h3>{% icon 'shield' %} {% t 'certs' %}</h3><p class="muted">{{ info.official_text|linebreaksbr }}</p>
+{% if certs %}<div class="certs">{% for c in certs %}<a href="{{ c.image.url }}" target="_blank"><img src="{{ c.image.url }}" alt="{{ c.title }}" loading="lazy">{% if c.title %}<small>{{ c.title }}</small>{% endif %}</a>{% endfor %}</div>{% endif %}</div>
+<div class="card"><h3>{% t 'contact_us' %}</h3><div class="links">
+{% if info.telegram %}<a class="btn tg" href="{{ info.telegram }}" target="_blank" rel="noopener">{% icon 'send' %} Telegram</a>{% endif %}
+{% if info.instagram %}<a class="btn ig" href="{{ info.instagram }}" target="_blank" rel="noopener">{% icon 'insta' %} Instagram</a>{% endif %}
+{% if info.phone %}<a class="btn light" href="tel:{{ info.phone }}">{{ info.phone }}</a>{% endif %}</div></div>{% endblock %}

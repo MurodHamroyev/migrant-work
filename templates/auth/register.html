@@ -1,0 +1,24 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<div class="authcard"><div class="logo big"><i>M</i><span>MigrantWork</span></div><h1>{% t 'register' %}</h1>
+<form method="post">{% csrf_token %}
+<div class="two"><div class="field"><label>{% t 'first_name' %}</label>{{ form.first_name }}{% for e in form.first_name.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+<div class="field"><label>{% t 'last_name' %}</label>{{ form.last_name }}{% for e in form.last_name.errors %}<p class="err">{{ e }}</p>{% endfor %}</div></div>
+<div class="field"><label>{% t 'country' %}</label>
+<button type="button" class="picker" data-open="cdlg"><span id="cflag"></span><span id="cname"></span>{% icon 'chev' %}</button>
+<input type="hidden" name="country" id="country" value="{{ form.country.value|default:'UZ' }}"></div>
+<div class="field"><label>{% t 'phone' %}</label><div class="phone"><span id="dial">+998</span>
+<input name="phone" type="tel" inputmode="tel" autocomplete="tel-national" value="{{ form.phone.value|default:'' }}" placeholder="90 123 45 67"></div>
+{% for e in form.phone.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+<div class="field"><label>{% t 'email' %}</label>{{ form.email }}{% for e in form.email.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+<div class="field"><label>{% t 'prev_job' %} <small>({% t 'optional' %})</small></label>{{ form.prev_job }}</div>
+<div class="field"><label>{% t 'experience' %} <small>({% t 'optional' %})</small></label>{{ form.experience }}</div>
+{% t 'password' as pw1 %}{% t 'password2' as pw2 %}{% include '_pw.html' with f=form.password1 label=pw1 %}
+{% include '_pw.html' with f=form.password2 label=pw2 %}
+{% for e in form.non_field_errors %}<p class="err">{{ e }}</p>{% endfor %}
+<button class="btn full">{% t 'btn_register' %}</button></form>
+<p class="muted center">{% t 'have_account' %} <a href="{% url 'login' %}"><b>{% t 'btn_login' %}</b></a></p></div>
+
+<dialog id="cdlg" class="sheet"><div class="sheet-h"><b>{% t 'choose_country' %}</b><button type="button" class="iconbtn" data-close>{% icon 'x' %}</button></div>
+<div class="field"><input type="search" id="csearch" placeholder="{% t 'search' %}"></div>
+<ul class="clist" id="clist">{% for c in countries %}<li><button type="button" data-iso="{{ c.iso }}" data-dial="{{ c.dial }}" data-name="{{ c.name }}" data-flag="{{ c.flag }}"><span class="fl">{{ c.flag }}</span><span>{{ c.name }}</span><em>{{ c.dial }}</em></button></li>{% endfor %}</ul></dialog>
+{% endblock %}

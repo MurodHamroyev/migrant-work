@@ -1,0 +1,17 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<section class="hero"><h1>{% t 'shift_title' %}</h1>{% if app %}<p>{{ app.vacancy.title }} — {{ app.vacancy.location }}</p>{% endif %}</section>
+{% if not app %}<div class="card empty">{% icon 'clock' 'big' %}<p class="muted">{% t 'no_working' %}</p><a class="btn" href="{% url 'dashboard' %}">{% t 'nav_profile' %}</a></div>
+{% else %}
+{% if left %}<div class="card timer"><span class="muted">{% t 'next_shift_in' %}</span><b class="clock" data-countdown="{{ left }}">--:--:--</b><small class="muted">{% t 'shift_wait' %}</small></div>
+{% else %}<form class="card" method="post" enctype="multipart/form-data">{% csrf_token %}
+<h3>{% icon 'camera' %} {% t 'shift_photo_title' %}</h3><p class="muted">{% t 'shift_photo_hint' %}</p>
+<label class="drop big">{% icon 'camera' %}<span class="fname">{% t 'take_photo' %}</span><input type="file" name="photo" accept="image/*" capture="environment" data-fname required></label>
+<button class="btn green full">{% t 'btn_confirm_shift' %}</button></form>{% endif %}
+<button class="btn light full" type="button" data-open="forgot">{% icon 'calendar' %} {% t 'forgot_btn' %}</button>
+<dialog id="forgot" class="sheet"><div class="sheet-h"><b>{% t 'forgot_title' %}</b><button type="button" class="iconbtn" data-close>{% icon 'x' %}</button></div>
+<form method="post" action="{% url 'shift_forgot' %}" enctype="multipart/form-data">{% csrf_token %}
+<div class="field"><label>{% t 'pick_date' %}</label><input type="date" name="date" max="{{ today }}" required></div>
+<div class="field"><label>{% t 'shift_photo_title' %}</label><label class="drop">{% icon 'camera' %}<span class="fname">{% t 'take_photo' %}</span><input type="file" name="photo" accept="image/*" capture="environment" data-fname required></label></div>
+<button class="btn full">{% t 'btn_send' %}</button></form></dialog>
+{% if shifts %}<h2>{% t 'my_shifts' %}</h2>{% for s in shifts %}<div class="card row slim"><span>{% icon 'calendar' %} {{ s.work_date|date:"d.m.Y" }}</span><span class="badge {{ s.status }}">{% if s.status == 'pending' %}{% t 'shift_pending' %}{% elif s.status == 'accepted' %}{% t 'shift_accepted' %}{% else %}{% t 'shift_rejected' %}{% endif %}</span></div>{% endfor %}{% endif %}
+{% endif %}{% endblock %}
